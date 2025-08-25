@@ -5,6 +5,7 @@ import { TouchableOpacity } from 'react-native';
 import { getAuth } from 'firebase/auth';
 import ShoppingListItem from '../components/list/ShoppingListItem';
 import ListSetup from '../components/list/ListSetup';
+import AddItemModal from '../components/list/AddItemModal';
 import { 
   addItemToList, 
   getShoppingItems, 
@@ -46,8 +47,7 @@ const ShoppingListScreen = () => {
       await addItemToList(listId, newItem);
       setNewItemName('');
       setModalVisible(false);
-      fetchLists(); // Refrescar la lista después de añadir un ítem
-      calculateTotal(); // Recalcular el total
+      reloadAll();
     } catch (error) {
       console.error('Error al añadir el ítem:', error);
     }
@@ -57,6 +57,7 @@ const ShoppingListScreen = () => {
     if (!listId) return;
     try {
       await removeItemFromList(listId, itemId);
+      reloadAll();
     } catch (error) {
       console.error('Error al eliminar el ítem:', error);
     }
@@ -68,7 +69,7 @@ const ShoppingListScreen = () => {
     if (!listId || !itemId) return;
     try {
       await updateItemInList(listId, itemId, field, value);
-      calculateTotal();
+      reloadAll();
     } catch (error) {
       console.error('Error al actualizar el ítem:', error);
     }
@@ -85,37 +86,32 @@ const ShoppingListScreen = () => {
 
 
   const fetchLists = async () => {
-    console.log('User:', user);
+    // console.log('User:', user);
     // if (!user) return;
     try {
       const lists = await getShoppingLists('test'); // Reemplaza 'test' con user.uid
       if (lists.length > 0) {
-        console.log('Lista de compras obtenida:', lists[0]);
+        // console.log('Lista de compras obtenida:', lists[0]);
         setListId(lists[0].id);
         const items = await getShoppingItems(lists[0].id);
         console.log('Items de la lista:', items);
         setItems(items);
-        // Calcular el total inicial
-        calculateTotal();
       }
     } catch (error) {
       console.error('Error al cargar la lista de compras:', error);
     }
   };
 
-  // ... useEffect para cargar la lista desde Firestore (código del Día 8) ...
-  useEffect(() => {
+  function reloadAll() {
     fetchLists();
     calculateTotal();
+  }
 
-    // Cleanup if necessary
-    return () => {};
-  }, [user]);
+  // ... useEffect para cargar la lista desde Firestore (código del Día 8) ...
+  useEffect(() => { fetchLists(); }, [user]);
 
   // Nuevo useEffect para el cálculo del total
-  useEffect(() => {
-    calculateTotal();
-  }, [items]);
+  useEffect(() => { calculateTotal(); }, [items]);
 
   return (
     <View style={styles.container}>
@@ -157,28 +153,11 @@ const ShoppingListScreen = () => {
       </TouchableOpacity>
 
       {/* Modal para agregar el ítem */}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isModalVisible}
-        onRequestClose={() => setModalVisible(!isModalVisible)}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Añadir nuevo ítem</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Nombre del ítem"
-              value={newItemName}
-              onChangeText={setNewItemName}
-            />
-            <View style={styles.modalButtons}>
-              <Button title="Cancelar" onPress={() => setModalVisible(false)} color="#666" />
-              <Button title="Guardar" onPress={() => handleAddItem(newItemName)} />
-            </View>
-          </View>
-        </View>
-      </Modal>
+      <AddItemModal
+        isVisible={isModalVisible}
+        onClose={() => setModalVisible(false)}
+        onAddItem={handleAddItem}
+      />
     </View>
   );
 };
@@ -208,7 +187,6 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
   },
-  // --- Estilos para el modal de añadir ítem ---
   floatingButton: {
     position: 'absolute',
     bottom: 30,
@@ -224,38 +202,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo semitransparente
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 10,
-    width: '80%', // El modal ocupa el 80% del ancho de la pantalla
-    alignItems: 'center',
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 15,
-  },
-  input: {
-    width: '100%',
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 20,
-  },
-  modalButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
   },
 });
 

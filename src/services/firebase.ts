@@ -11,13 +11,12 @@ import { Firestore, getFirestore } from 'firebase/firestore';
 
 // Tipado explícito del config (opcional, Firebase ya lo infiere bien)
 export const firebaseConfig = {
-  apiKey: "AIzaSyBQBdW4K5Wz9XqThohOVkH46PRiF4HmsY4",
-  authDomain: "food-planner-bb77b.firebaseapp.com",
-  projectId: "food-planner-bb77b",
-  storageBucket: "food-planner-bb77b.appspot.com",
-  messagingSenderId: "76583902816",
-  appId: "1:76583902816:web:efcdc2673e4d46605fad05",
-  measurementId: "G-8JNLB0ZNRN"
+  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID,
 };
 
 // Inicializar Firebase

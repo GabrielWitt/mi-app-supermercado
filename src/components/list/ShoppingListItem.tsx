@@ -31,7 +31,7 @@ const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item, onRemove, onU
     setLocalItem(item);
     setLocalPrice(item.price.toString());
     setLocalQuantity(item.quantity.toString());
-    console.log(`Item: ${item.name}`,item);
+    // console.log(`Item: ${item.name}`,item);
   }, [item]);
 
   return (
