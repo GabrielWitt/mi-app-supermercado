@@ -98,6 +98,60 @@ Aplicación móvil diseñada para optimizar la experiencia de compra y cocina, c
 
 ---
 
+## 🚀 Instalación y ejecución
+
+1. Clonar el repositorio:
+   ```bash
+   git clone https://github.com/GabrielWitt/mi-app-supermercado.git
+   cd mi-app-supermercado
+   ```
+
+2. Instalar dependencias:
+   ```bash
+   npm install
+   ```
+
+3. Ejecutar en entorno web con Expo:
+   ```bash
+   npx expo start --web
+   ```
+
+---
+
+## 🔑 Configuración de variables de entorno
+
+Este proyecto utiliza **Firebase** y requiere credenciales configuradas mediante un archivo `.env` (no incluido en este repositorio por motivos de seguridad).
+
+Ejemplo de `.env`:
+
+```env
+EXPO_PUBLIC_FIREBASE_API_KEY=your_api_key
+EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+EXPO_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+EXPO_PUBLIC_FIREBASE_APP_ID=your_app_id
+```
+
+⚠️ **Nota:** Este archivo está incluido en `.gitignore` para evitar la exposición de credenciales.
+
+---
+
+## 📌 Funcionalidades principales
+
+- Crear y gestionar listas de compras.  
+- Registrar precios en tiempo real.  
+- Guardar y consultar recetas.  
+- Revisar historial de compras.  
+
+---
+
+## 🛡️ Buenas prácticas
+
+Las credenciales sensibles se gestionan a través de variables de entorno y no se incluyen en el repositorio público. Esto asegura un manejo responsable y seguro de la configuración del proyecto.
+
+---
+
 ## Contacto / Contact
 
 Gabriel Witt – Senior Frontend & Mobile Developer  
